@@ -1,19 +1,14 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 using Expirator.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace Expirator {
-	public class Startup {
+    public class Startup {
 		public Startup(IConfiguration configuration) {
 			Configuration = configuration;
 		}
@@ -24,7 +19,10 @@ namespace Expirator {
 		public void ConfigureServices(IServiceCollection services) {
 			services.AddControllers();
 
-			services.AddScoped<IExpiratorRepo, MockExpiratorRepo>();
+			services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+			//services.AddScoped<IExpiratorRepo, MockExpiratorRepo>();
+			services.AddSingleton<IExpiratorRepo, MockExpiratorRepo>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
