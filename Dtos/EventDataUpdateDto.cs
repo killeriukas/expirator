@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace Expirator.Dtos {
-    public class EventDataCreateDto {
+    public class EventDataUpdateDto {
 
         [Required]
         [MaxLength(250)]

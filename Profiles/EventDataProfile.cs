@@ -8,6 +8,8 @@ namespace Expirator.Profiles {
         public EventDataProfile() {
             CreateMap<EventData, EventDataReadDto>();
             CreateMap<EventDataCreateDto, EventData>();
+            CreateMap<EventDataUpdateDto, EventData>();
+            CreateMap<EventData, EventDataUpdateDto>();
         }
     }
 }

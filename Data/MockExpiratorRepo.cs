@@ -61,5 +61,17 @@ namespace Expirator.Data {
 			//no need it here yet
 			return true;
         }
+
+        public void UpdateEvent(EventData eventData) {
+            //nothing here
+        }
+
+        public void DeleteEvent(EventData eventData) {
+			if(eventData == null) {
+				throw new ArgumentNullException();
+			}
+
+			repository.Remove(eventData);
+		}
     }
 }

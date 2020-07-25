@@ -7,5 +7,7 @@ namespace Expirator.Data {
 		IEnumerable<EventData> GetAllEvents();
 		EventData GetEventById(int id);
 		void CreateEvent(EventData eventData);
+		void UpdateEvent(EventData eventData);
+		void DeleteEvent(EventData eventData);
 	}
 }

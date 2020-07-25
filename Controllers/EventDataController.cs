@@ -2,6 +2,7 @@
 using Expirator.Data;
 using Expirator.Dtos;
 using Expirator.Models;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
@@ -51,6 +52,58 @@ namespace Expirator.Controllers {
 			return CreatedAtRoute("GetEventDataById", new { eventDataReadDto.Id }, eventDataReadDto);
 		}
 
+		[HttpPut("{id}")]
+		public ActionResult UpdateEvent(int id, EventDataUpdateDto newData) {
+			var eventData = repository.GetEventById(id);
+
+			if(eventData == null) {
+				return NotFound();
+			}
+
+			mapper.Map(newData, eventData);
+
+			repository.UpdateEvent(eventData);
+			repository.SaveChanges();
+
+			return NoContent();
+		}
+
+		[HttpPatch("{id}")]
+		public ActionResult PatchEvent(int id, JsonPatchDocument<EventDataUpdateDto> patchData) {
+			var eventData = repository.GetEventById(id);
+
+			if(eventData == null) {
+				return NotFound();
+			}
+
+			var eventPatch = mapper.Map<EventDataUpdateDto>(eventData);
+			patchData.ApplyTo(eventPatch, ModelState);
+
+			if(!TryValidateModel(eventPatch)) {
+				return ValidationProblem(ModelState);
+			}
+
+			mapper.Map(eventPatch, eventData);
+
+			repository.UpdateEvent(eventData);
+			repository.SaveChanges();
+
+			return NoContent();
+		}
+
+		[HttpDelete("{id}")]
+		public ActionResult DeleteEvent(int id) {
+			var eventData = repository.GetEventById(id);
+
+			if(eventData == null) {
+				return NotFound();
+			}
+
+			repository.DeleteEvent(eventData);
+			repository.SaveChanges();
+
+			return NoContent();
+		}
 
 	}
 }
