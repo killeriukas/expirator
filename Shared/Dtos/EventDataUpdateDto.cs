@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Expirator.Dtos {
+namespace Shared.Dtos {
     public class EventDataUpdateDto {
 
         [Required]

@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
-using Expirator.Data;
-using Expirator.Dtos;
-using Expirator.Models;
+using Server.Data;
+using Server.Models;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using Shared.Dtos;
 
-namespace Expirator.Controllers {
+namespace Server.Controllers {
 
     //	[Route("api/[controller]")]
     [Route("api/eventdata")]

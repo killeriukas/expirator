@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Expirator.Dtos {
+namespace Shared.Dtos {
     public class EventDataReadDto {
 		public int Id { get; set; }
 

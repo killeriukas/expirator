@@ -1,7 +1,7 @@
-﻿using Expirator.Models;
+﻿using Server.Models;
 using System.Collections.Generic;
 
-namespace Expirator.Data {
+namespace Server.Data {
 	public interface IExpiratorRepo {
 		bool SaveChanges();
 		IEnumerable<EventData> GetAllEvents();

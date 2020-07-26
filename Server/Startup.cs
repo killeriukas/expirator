@@ -1,6 +1,6 @@
 using System;
 using AutoMapper;
-using Expirator.Data;
+using Server.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Serialization;
 
-namespace Expirator {
+namespace Server {
     public class Startup {
 
 		public IConfiguration Configuration { get; }

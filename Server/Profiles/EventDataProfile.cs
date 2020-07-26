@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using Expirator.Dtos;
-using Expirator.Models;
+using Server.Models;
+using Shared.Dtos;
 
-namespace Expirator.Profiles {
+namespace Server.Profiles {
     public class EventDataProfile : Profile {
 
         public EventDataProfile() {

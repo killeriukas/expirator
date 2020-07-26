@@ -1,9 +1,9 @@
-﻿using Expirator.Models;
+﻿using Server.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Expirator.Data {
+namespace Server.Data {
 	public class MockExpiratorRepo : IExpiratorRepo {
 
 		private int index = 0;
