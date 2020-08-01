@@ -1,0 +1,48 @@
+﻿@page "/eventdata/add"
+@using Shared.Dtos
+@inject HttpClient http
+
+<div class="row justify-content-center">
+    <h2>New Event Data</h2>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-6">
+        <div class="form-group">
+            <label for="add_event_name">Event Name</label>
+            <input type="text" class="form-control" id="add_event_name" placeholder="New event name" @bind="createEventData.Name" />
+        </div>
+        <div class="form-row">
+            <div class="form-group col">
+                <label for="add_start_data">Start Date</label>
+                <input type="date" class="form-control" id="add_start_date" />
+            </div>
+            <div class="form-group col">
+                <label for="add_expiration_data">Expiration Date</label>
+                <input type="date" class="form-control" id="add_expiration_data" />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col">
+                <a class="btn btn-danger form-control" href="/">Cancel</a>
+            </div>
+            <div class="col">
+                <button class="btn btn-success form-control" @onclick="OnCreateClicked">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    private EventDataCreateDto createEventData = new EventDataCreateDto();
+
+    private async void OnCreateClicked() {
+        //await http.PostAsJsonAsync("", createEventData);
+
+        string test = System.Text.Json.JsonSerializer.Serialize(createEventData);
+
+        Console.WriteLine("JSON: " + test);
+    }
+
+}
