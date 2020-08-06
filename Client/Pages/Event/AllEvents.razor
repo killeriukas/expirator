@@ -1,0 +1,55 @@
+﻿@using Shared.Dtos
+@inject HttpClient http
+
+<div class="row">
+    @if(eventViews == null) {
+        <p>Pending for event data results...</p>
+    } else {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Start Time</th>
+                    <th>Expiration Time</th>
+                    <th>Due</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var data in eventViews) {
+                    <tr class="@GetBackgroundColor(data) text-white">
+                        <td>@data.Name</td>
+                        <td>@data.StartTime.ToShortDateString()</td>
+                        <td>@data.ExpirationTime.ToShortDateString()</td>
+                        <td><span>@data.GetDueDays() Days</span></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+@code {
+
+    //    private int index = 0;
+    private List<EventDataReadDto> eventViews = null;
+
+
+    public string GetBackgroundColor(EventDataReadDto data) {
+        return GetBackgroundColor(data.GetDueDays());
+    }
+
+    private string GetBackgroundColor(int days) {
+        if(days > 30) {
+            return "bg-success";
+        } else if(days > 7) {
+            return "bg-warning";
+        } else {
+            return "bg-danger";
+        }
+    }
+
+    protected override async Task OnInitializedAsync() {
+        eventViews = await http.GetFromJsonAsync<List<EventDataReadDto>>("api/eventdata");
+    }
+
+}

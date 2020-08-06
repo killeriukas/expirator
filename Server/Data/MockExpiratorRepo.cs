@@ -16,7 +16,7 @@ namespace Server.Data {
 					Id = index++,
 					Name = "Test Name 0",
 					StartTime = DateTime.UtcNow,
-					ExpirationTime = DateTime.UtcNow.AddDays(7)
+					ExpirationTime = DateTime.UtcNow.AddDays(5)
 				},
 				new EventData() {
 					Id = index++,
@@ -28,13 +28,13 @@ namespace Server.Data {
 					Id = index++,
 					Name = "Test Name 2",
 					StartTime = DateTime.UtcNow,
-					ExpirationTime = DateTime.UtcNow.AddDays(7)
+					ExpirationTime = DateTime.UtcNow.AddDays(15)
 				},
 				new EventData() {
 					Id = index++,
 					Name = "Test Name 3",
 					StartTime = DateTime.UtcNow,
-					ExpirationTime = DateTime.UtcNow.AddDays(7)
+					ExpirationTime = DateTime.UtcNow.AddDays(45)
 				},
 		};
 		}
