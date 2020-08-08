@@ -1,15 +1,19 @@
-﻿@page "/eventdata/add"
+﻿@page "/eventdata/edit/{id:int}"
 @using Shared.Dtos
 @inject HttpClient http
 @inject NavigationManager navigationManager
 
 <div class="row justify-content-center">
-    <div class="col-auto">
-        <h2>New Event Data</h2>
+    <div class="col">
+        @if(createEventData == null) {
+            <h2>Loading the item</h2>
+        } else {
+            <h2>Editing @createEventData.Name</h2>
+        }
     </div>
 </div>
 
-<div class="row justify-content-center">
+@*<div class="row justify-content-center">
     <div class="col-6">
         <div class="form-group">
             <label for="add_event_name">Event Name</label>
@@ -34,15 +38,23 @@
             </div>
         </div>
     </div>
-</div>
+</div>*@
 
 @code {
 
-    private EventDataCreateDto createEventData = new EventDataCreateDto();
+    [Parameter]
+    public int Id { get; set; }
 
-    private async Task OnCreateClicked() {
-        var response = await http.PostAsJsonAsync("api/eventdata", createEventData);
-        navigationManager.NavigateTo("/");
+
+    private EventDataCreateDto createEventData = null;
+
+    protected override async Task OnInitializedAsync() {
+        createEventData = await http.GetFromJsonAsync<EventDataCreateDto>($"api/eventdata/{Id}");
     }
+
+    //private async Task OnCreateClicked() {
+    //    var response = await http.PostAsJsonAsync("api/eventdata", createEventData);
+    //    navigationManager.NavigateTo("/");
+    //}
 
 }
