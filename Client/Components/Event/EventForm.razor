@@ -1,0 +1,23 @@
+﻿@using Shared.Dtos
+
+<div class="form-group">
+    <label for="add_event_name">Event Name</label>
+    <input type="text" class="form-control" id="add_event_name" placeholder="New event name" @bind="createEventData.Name" />
+</div>
+<div class="form-row">
+    <div class="form-group col">
+        <label for="add_start_data">Start Date</label>
+        <input type="date" class="form-control" id="add_start_date" @bind="createEventData.StartTime" />
+    </div>
+    <div class="form-group col">
+        <label for="add_expiration_data">Expiration Date</label>
+        <input type="date" class="form-control" id="add_expiration_data" @bind="createEventData.ExpirationTime" />
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public EventDataCreateDto createEventData { get; set; }
+
+}
