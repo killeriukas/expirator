@@ -28,6 +28,13 @@
 
     private EventDataCreateDto createEventData = new EventDataCreateDto();
 
+    protected override void OnInitialized() {
+        base.OnInitialized();
+
+        createEventData.StartTime = DateTime.UtcNow;
+        createEventData.ExpirationTime = DateTime.UtcNow;
+    }
+
     private async Task OnCreateClicked() {
         var response = await http.PostAsJsonAsync("api/eventdata", createEventData);
         navigationManager.NavigateTo("/");

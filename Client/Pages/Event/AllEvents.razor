@@ -21,7 +21,14 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
-                            <button type="button" class="btn btn-danger" @onclick="() => OnDeleteConfirmClicked(currentlySelected)">Delete</button>
+                            <button type="button" class="btn btn-danger" @onclick="() => OnDeleteConfirmClicked(currentlySelected)" disabled="@isLoading">
+                                @if(isLoading) {
+                                    <span class="spinner-border spinner-border-sm"></span>
+                                    <span>Deleting...</span>
+                                } else {
+                                    <span>Delete</span>
+                                }
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -62,6 +69,7 @@
 </div>
 
 @code {
+    private bool isLoading = false;
 
     private EventDataReadDto currentlySelected = new EventDataReadDto();
 
@@ -70,10 +78,14 @@
     }
 
     private async void OnDeleteConfirmClicked(EventDataReadDto item) {
+        isLoading = true;
+
         await http.DeleteAsync($"api/eventdata/{item.Id}");
         eventViews.Remove(item);
 
         await JSRuntime.InvokeVoidAsync("HideModalById", "deleteEventModal");
+
+        isLoading = false;
 
         currentlySelected = new EventDataReadDto();
         StateHasChanged();
