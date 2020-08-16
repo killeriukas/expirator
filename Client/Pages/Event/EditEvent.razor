@@ -1,94 +1,76 @@
 ﻿@page "/eventdata/edit/{id:int}"
 @using Shared.Dtos
+@using Client.Components.Event
+@using Microsoft.AspNetCore.JsonPatch
+
 @inject HttpClient http
 @inject NavigationManager navigationManager
 
+
 <div class="row justify-content-center">
-    <div class="col">
+    <div class="col-auto">
+        <h2>Editing @createEventData?.Name</h2>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-6">
         @if(createEventData == null) {
-            <h2>Loading the item</h2>
+            <p>Loading item...</p>
         } else {
-            <h2>Editing @createEventData.Name</h2>
-
-
-
-
+            <EventForm createEventData="@createEventData"></EventForm>
+            <div class="form-row">
+                <div class="form-group col">
+                    <a class="btn btn-danger form-control" href="/">Back</a>
+                </div>
+                <div class="form-group col">
+                    <button class="btn btn-success form-control" @onclick="OnUpdateClicked">Update</button>
+                </div>
+            </div>
         }
     </div>
 </div>
-
-@*<div class="row justify-content-center">
-        <div class="col-6">
-            <div class="form-group">
-                <label for="add_event_name">Event Name</label>
-                <input type="text" class="form-control" id="add_event_name" placeholder="New event name" @bind="createEventData.Name" />
-            </div>
-            <div class="form-row">
-                <div class="form-group col">
-                    <label for="add_start_data">Start Date</label>
-                    <input type="date" class="form-control" id="add_start_date" @bind="createEventData.StartTime"/>
-                </div>
-                <div class="form-group col">
-                    <label for="add_expiration_data">Expiration Date</label>
-                    <input type="date" class="form-control" id="add_expiration_data" @bind="createEventData.ExpirationTime"/>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="col">
-                    <a class="btn btn-danger form-control" href="/">Cancel</a>
-                </div>
-                <div class="col">
-                    <button class="btn btn-success form-control" @onclick="OnCreateClicked">Create</button>
-                </div>
-            </div>
-        </div>
-    </div>*@
-
-
-
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-    Launch demo modal
-</button>
-
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
 
 @code {
 
     [Parameter]
     public int Id { get; set; }
 
-
     private EventDataCreateDto createEventData = null;
 
     protected override async Task OnInitializedAsync() {
-        createEventData = await http.GetFromJsonAsync<EventDataCreateDto>($"api/eventdata/{Id}");
+        EventDataReadDto readEventData = await http.GetFromJsonAsync<EventDataReadDto>($"api/eventdata/{Id}");
+
+        createEventData = new EventDataCreateDto();
+        createEventData.Name = readEventData.Name;
+        createEventData.StartTime = readEventData.StartTime;
+        createEventData.ExpirationTime = readEventData.ExpirationTime;
     }
 
-    //private async Task OnCreateClicked() {
-    //    var response = await http.PostAsJsonAsync("api/eventdata", createEventData);
-    //    navigationManager.NavigateTo("/");
-    //}
+    private async Task OnUpdateClicked() {
+        EventDataUpdateDto eventDataUpdateDto = new EventDataUpdateDto();
+        eventDataUpdateDto.Name = createEventData.Name;
+        eventDataUpdateDto.StartTime = createEventData.StartTime;
+        eventDataUpdateDto.ExpirationTime = createEventData.ExpirationTime;
+
+
+        //JsonPatchDocument<EventDataUpdateDto> test;
+
+        //string content = System.Text.Json.JsonSerializer.Serialize(eventDataUpdateDto);
+
+        //Console.WriteLine("Content: " + content);
+
+        //await http.PatchAsync($"api/eventdata/{Id}", new StringContent(content));
+
+        //var response = await http.PostAsJsonAsync("api/eventdata", createEventData);
+        //navigationManager.NavigateTo("/");
+        //    Console.WriteLine("Clicked on update");
+
+
+        //     new StringContent();
+
+
+        //HttpContent test = new HttpContentJsonExtensions();
+    }
 
 }
