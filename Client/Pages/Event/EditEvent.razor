@@ -2,9 +2,12 @@
 @using Shared.Dtos
 @using Client.Components.Event
 @using Microsoft.AspNetCore.JsonPatch
+@using Palit.AspNetCore.JsonPatch.Extensions.Generate
+@using Newtonsoft.Json
 
 @inject HttpClient http
 @inject NavigationManager navigationManager
+@inject AutoMapper.IMapper mapper
 
 
 <div class="row justify-content-center">
@@ -36,41 +39,26 @@
     [Parameter]
     public int Id { get; set; }
 
+    private EventDataReadDto originalEventData = null;
+
     private EventDataCreateDto createEventData = null;
 
     protected override async Task OnInitializedAsync() {
-        EventDataReadDto readEventData = await http.GetFromJsonAsync<EventDataReadDto>($"api/eventdata/{Id}");
-
-        createEventData = new EventDataCreateDto();
-        createEventData.Name = readEventData.Name;
-        createEventData.StartTime = readEventData.StartTime;
-        createEventData.ExpirationTime = readEventData.ExpirationTime;
+        originalEventData = await http.GetFromJsonAsync<EventDataReadDto>($"api/eventdata/{Id}");
+        createEventData = mapper.Map<EventDataCreateDto>(originalEventData);
     }
 
     private async Task OnUpdateClicked() {
-        EventDataUpdateDto eventDataUpdateDto = new EventDataUpdateDto();
-        eventDataUpdateDto.Name = createEventData.Name;
-        eventDataUpdateDto.StartTime = createEventData.StartTime;
-        eventDataUpdateDto.ExpirationTime = createEventData.ExpirationTime;
+        JsonPatchDocumentGenerator patchGenerator = new JsonPatchDocumentGenerator();
 
+        EventDataUpdateDto original = mapper.Map<EventDataUpdateDto>(originalEventData);
+        EventDataUpdateDto updated = mapper.Map<EventDataUpdateDto>(createEventData);
 
-        //JsonPatchDocument<EventDataUpdateDto> test;
+        JsonPatchDocument jsonPatch = patchGenerator.Generate<EventDataUpdateDto>(original, updated);
+        string diffJson = JsonConvert.SerializeObject(jsonPatch);
 
-        //string content = System.Text.Json.JsonSerializer.Serialize(eventDataUpdateDto);
-
-        //Console.WriteLine("Content: " + content);
-
-        //await http.PatchAsync($"api/eventdata/{Id}", new StringContent(content));
-
-        //var response = await http.PostAsJsonAsync("api/eventdata", createEventData);
-        //navigationManager.NavigateTo("/");
-        //    Console.WriteLine("Clicked on update");
-
-
-        //     new StringContent();
-
-
-        //HttpContent test = new HttpContentJsonExtensions();
+        await http.PatchAsync($"api/eventdata/{Id}", new StringContent(diffJson, System.Text.Encoding.UTF8, "application/json"));
+        navigationManager.NavigateTo("/");
     }
 
 }
